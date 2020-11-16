@@ -27,6 +27,28 @@ function bargraph(id_iput) {
         };
         var data = [readData];
         Plotly.newPlot("bar", data, setLayout);
+        //-------------------------------------------------------
+            // Build a Bubble Chart using the sample data
+        var LayoutBubble = {
+        margin: { t: 0 },
+        xaxis: { title: "Id's" },
+        hovermode: "closest",
+        };
+  
+        var DataBubble = [
+        {
+          x: otu_ids,
+          y: otu_values,
+          text: otu_labels,
+          mode: "markers",
+          marker: {
+            color: otu_ids,
+            size: otu_values,
+            }
+        }
+      ];
+  
+      Plotly.plot("bubble", DataBubble, LayoutBubble);  
     });
 };
 
