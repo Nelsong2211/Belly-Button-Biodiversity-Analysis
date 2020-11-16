@@ -98,4 +98,4 @@ function bargraph(userInput) {       
 };
 //this is the default function you initialise that chooses a default option of the dropdown menu so graphs will always be shown
 defaultfunction();
-optionChanged();
+bargraph();
