@@ -72,9 +72,30 @@ function defaultfunction() {
 //when user changes it then it will change the graphs
 // get optionChanged(this.value) from the index file and create a function for it
 // this function should change the visualisations based on the selected id
-function optionChanged(userInput) {    
-    bargraph(userInput);    
+
+function bargraph(userInput) {       
     //place your bubule chart and demographics function here
+
+        d3.json("samples.json").then((data) => {
+                var metadata = data.metadata;
+                var resultsarray= metadata.filter(sampleobject => sampleobject.id == userInput);
+                var result= resultsarray[0]
+                var PANEL = d3.select("#sample-metadata");
+                PANEL.html("");
+                Object.entries(result).forEach(([key, value]) => {
+                PANEL.append("h6").text(`${key}: ${value}`);
+                  });
+
+
+            //select one by default
+            bargraph(data.names[0]);
+            //place your bubule chart and demographics function here
+        });
+
+    bargraph(userInput);
+    
+   
 };
 //this is the default function you initialise that chooses a default option of the dropdown menu so graphs will always be shown
 defaultfunction();
+optionChanged();
