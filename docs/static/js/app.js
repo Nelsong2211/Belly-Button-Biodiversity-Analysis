@@ -27,28 +27,29 @@ function bargraph(id_iput) {
         };
         var data = [readData];
         Plotly.newPlot("bar", data, setLayout);
-        //-------------------------------------------------------
-            // Build a Bubble Chart using the sample data
+
+         //-------------------------------------------------------
+         // Build a Bubble Chart using the sample data
         var LayoutBubble = {
-        margin: { t: 0 },
-        xaxis: { title: "Id's" },
-        hovermode: "closest",
-        };
-  
+            margin: { t: 0 },
+            xaxis: { title: "Id's" },
+            hovermode: "closest",
+            };
+          
         var DataBubble = [
-        {
-          x: otu_ids,
-          y: otu_values,
-          text: otu_labels,
-          mode: "markers",
-          marker: {
+            {
+            x: otu_ids,
+            y: otu_values,
+            text: otu_labels,
+            mode: "markers",
+            marker: {
             color: otu_ids,
             size: otu_values,
+                }
             }
-        }
-      ];
-  
-      Plotly.plot("bubble", DataBubble, LayoutBubble);  
+        ];
+          
+        Plotly.plot("bubble", DataBubble, LayoutBubble); 
     });
 };
 
@@ -72,30 +73,40 @@ function defaultfunction() {
 //when user changes it then it will change the graphs
 // get optionChanged(this.value) from the index file and create a function for it
 // this function should change the visualisations based on the selected id
-
-function bargraph(userInput) {       
+function optionChanged(userInput) {    
+    bargraph(userInput);    
     //place your bubule chart and demographics function here
-
-        d3.json("samples.json").then((data) => {
-                var metadata = data.metadata;
-                var resultsarray= metadata.filter(sampleobject => sampleobject.id == userInput);
-                var result= resultsarray[0]
-                var PANEL = d3.select("#sample-metadata");
-                PANEL.html("");
-                Object.entries(result).forEach(([key, value]) => {
-                PANEL.append("h6").text(`${key}: ${value}`);
-                  });
-
-
-            //select one by default
-            bargraph(data.names[0]);
-            //place your bubule chart and demographics function here
-        });
-
-    bargraph(userInput);
-    
-   
 };
 //this is the default function you initialise that chooses a default option of the dropdown menu so graphs will always be shown
 defaultfunction();
-bargraph();
+
+
+//---------------------
+
+
+function buildMetadata(sample) {
+
+    // @TODO: Complete the following function that builds the metadata panel
+  
+    // Use `d3.json` to fetch the metadata for a sample
+    // Relates to app.py
+    var urlMeta = `/metadata/${sample}`;
+    d3.json(urlMeta).then(function(sample){
+      // Use d3 to select the panel with id of `#sample-metadata`
+      // Relates to index
+        var sampleMetadata = d3.select("#sample-metadata");
+      
+      // Use `.html("") to clear any existing metadata
+      sampleMetadata.html("");
+  
+      // Use `Object.entries` to add each key and value pair to the panel
+      Object.entries(sample).forEach(([key, value]) => {
+        sampleMetadata.append('h6').text(`${key}, ${value}`);
+      })
+      // Hint: Inside the loop, you will need to use d3 to append new
+      // tags for each key-value in the metadata.
+  
+      // BONUS: Build the Gauge Chart
+      // buildGauge(data.WFREQ);
+      });
+    };
