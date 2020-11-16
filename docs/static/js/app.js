@@ -1,4 +1,4 @@
-// bubble chart
+
 
 //horizontal bar graph
 function bargraph(id_iput) {
@@ -22,20 +22,24 @@ function bargraph(id_iput) {
                 type: "bar", //bar graphs
                 orientation: "h" //horizontal graphs
         };
+        // set layout
         var setLayout = {
-                title: "Bacteria found"
+                title: "top 10 OTUs found "
         };
+        // put the data in a list
         var data = [readData];
+        //plit it
         Plotly.newPlot("bar", data, setLayout);
                //-------------------------------------------------------
             // Build a Bubble Chart using the sample data
-            var LayoutBubble = {
+            // set layout
+            var Layout2 = {
                 margin: { t: 0 },
                 xaxis: { title: "Id's" },
                 hovermode: "closest",
                 };
-          
-                var DataBubble = [
+                // set the values and poutit into a list [] at the same time
+                var bubbleData = [
                 {
                   x: otu_ids,
                   y: otu_values,
@@ -47,8 +51,8 @@ function bargraph(id_iput) {
                     }
                 }
               ];
-          
-              Plotly.plot("bubble", DataBubble, LayoutBubble);
+              //plot it
+              Plotly.plot("bubble", bubbleData, Layout2);
     });
 };
 
@@ -74,14 +78,18 @@ function defaultfunction() {
 // this function should change the visualisations based on the selected id
 function optionChanged(userInput) {    
     bargraph(userInput);
+    // Use `d3.json` to Fetch the Metadata for a Sample
         d3.json("samples.json").then((data) => {
                 var metadata = data.metadata;
                 var resultsarray= metadata.filter(sampleobject => sampleobject.id == userInput);
                 var result= resultsarray[0]
-                var PANEL = d3.select("#sample-metadata");
-                PANEL.html("");
+                //use d3 to select panel  with the id
+                var box = d3.select("#sample-metadata");
+                 //  Clear any Existing data
+                box.html("");
+                // Use `Object.entries` to Add Each Key & Value Pair to the Panel
                 Object.entries(result).forEach(([key, value]) => {
-                PANEL.append("h6").text(`${key}: ${value}`);
+                box.append("h6").text(`${key}: ${value}`);
                   });
 
 
