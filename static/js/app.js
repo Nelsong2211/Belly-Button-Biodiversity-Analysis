@@ -28,7 +28,7 @@ function bargraph(id_iput) {
         };
         // put the data in a list
         var data = [readData];
-        //plit it
+        //plot it
         Plotly.newPlot("bar", data, setLayout);
                //-------------------------------------------------------
             // Build a Bubble Chart using the sample data
